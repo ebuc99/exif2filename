@@ -1,4 +1,4 @@
-*.[oa]
+src/*.[oa]
 *~
 src/exif2filename
 src/.deps/
@@ -7,5 +7,4 @@ autom4te.*
 Makefile
 config.status
 config.h
-configure
 *.JPG

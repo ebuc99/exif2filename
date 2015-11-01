@@ -4,12 +4,12 @@
 
 void date2filename(const char str_prefix[], char str_in[], char str_out[]);
 
+char* getFilePrefix(int argc, char *argv[]);
+
 int main(int argc, char *argv[]) {
-	if(argc < 2) {
-		printf("Es muss ein Dateiprefix angegeben werden!\n");
+	char* file_prefix = getFilePrefix(argc, argv);
+	if(!file_prefix)
 		return EXIT_FAILURE;
-	}
-	char* file_prefix = argv[1];
 	uint16_t cnt_files = get_number_files_in_dir();
 	if(!cnt_files) {
 		printf("Keine Dateien im Verzeichnis gefunden!\n");
@@ -51,4 +51,12 @@ void date2filename(const char str_prefix[], char str_in[], char str_out[]) {
 		token = strtok(NULL, " ");
 	}
 	strcat(str_out, ".JPG");
+}
+
+char* getFilePrefix(int argc, char *argv[]) {
+	if(argc < 2) {
+		printf("Es muss ein Dateiprefix angegeben werden!\n");
+		return NULL;
+	}
+	return argv[1];
 }
