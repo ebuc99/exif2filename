@@ -1,0 +1,11 @@
+*.[oa]
+*~
+src/exif2filename
+src/.deps/
+config.log
+autom4te.*
+Makefile
+config.status
+config.h
+configure
+*.JPG
