@@ -11,8 +11,9 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CC
 
 # Checks for libraries.
-
 # Checks for header files.
+dnl Cheeck for exif header
+AC_CHECK_HEADER([libexif/exif-data.h],,[AC_MSG_ERROR(couldn't find libexif/exif-data.h...try install exif-devel)])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
