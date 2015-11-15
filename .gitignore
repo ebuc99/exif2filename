@@ -2,6 +2,7 @@ src/*.[oa]
 *~
 src/exif2filename
 src/.deps/
+src/*.swp
 config.log
 autom4te.*
 Makefile

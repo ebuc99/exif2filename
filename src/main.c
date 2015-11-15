@@ -71,6 +71,7 @@ bool isOptionHelp(int argc, char *argv[]) {
 	for(i=1;i<argc;++i){
 		if(!strcmp(argv[i],"--help")) {
 			printf("call: exif2filename [OPTION]... prefix\n");
+			printf("Converting all .jpg files in the current directory to prefixyyyymmddhhmm. The timestamp is taken from the exif informations of the files\n");
 			return true;
 		}
 	}
