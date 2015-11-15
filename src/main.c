@@ -1,4 +1,5 @@
 #include <file_handling.h>
+#include <stdbool.h>
 #define MAXCHAR 20
 
 
@@ -6,7 +7,11 @@ void date2filename(const char str_prefix[], char str_in[], char str_out[]);
 
 char* getFilePrefix(int argc, char *argv[]);
 
+bool isOptionHelp(int argc, char *argv[]);
+
 int main(int argc, char *argv[]) {
+	if (isOptionHelp(argc, argv))
+		return EXIT_SUCCESS;
 	char* file_prefix = getFilePrefix(argc, argv);
 	if(!file_prefix)
 		return EXIT_FAILURE;
@@ -59,4 +64,15 @@ char* getFilePrefix(int argc, char *argv[]) {
 		return NULL;
 	}
 	return argv[1];
+}
+
+bool isOptionHelp(int argc, char *argv[]) {
+	int i;
+	for(i=1;i<argc;++i){
+		if(!strcmp(argv[i],"--help")) {
+			printf("call: exif2filename [OPTION]... prefix\n");
+			return true;
+		}
+	}
+	return false;
 }
