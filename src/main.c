@@ -2,22 +2,35 @@
 #include <stdbool.h>
 #define MAXCHAR 20
 
+struct options {
+	bool help;
+	bool backup;
+	bool error;
+};
 
 void date2filename(const char str_prefix[], char str_in[], char str_out[]);
 
 char* getFilePrefix(int argc, char *argv[]);
 
-bool isOptionHelp(int argc, char *argv[]);
+struct options getOptions(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
-	if (isOptionHelp(argc, argv))
+	struct options options = getOptions(argc, argv);
+	if(options.help) {
+			printf("call: exif2filename [OPTION]... prefix\n");
+			printf("Converting all .jpg files in the current directory to prefixyyyymmddhhmm. The timestamp is taken from the exif informations of the files\n");
 		return EXIT_SUCCESS;
+	}
+	if(options.error) {
+		printf("unknown options, see help\n");
+		return EXIT_FAILURE;
+	}
 	char* file_prefix = getFilePrefix(argc, argv);
 	if(!file_prefix)
 		return EXIT_FAILURE;
 	uint16_t cnt_files = get_number_files_in_dir();
 	if(!cnt_files) {
-		printf("Keine Dateien im Verzeichnis gefunden!\n");
+		printf("No jpg files found in current directory!\n");
 		return EXIT_FAILURE;
 	}
 	char *files[cnt_files];
@@ -60,20 +73,27 @@ void date2filename(const char str_prefix[], char str_in[], char str_out[]) {
 
 char* getFilePrefix(int argc, char *argv[]) {
 	if(argc < 2) {
-		printf("Es muss ein Dateiprefix angegeben werden!\n");
+		printf("You have to specify a file prefix!\n");
 		return NULL;
 	}
 	return argv[1];
 }
 
-bool isOptionHelp(int argc, char *argv[]) {
+struct options getOptions(int argc, char *argv[]) {
+	struct options options = {false, false, false};
 	int i;
 	for(i=1;i<argc;++i){
-		if(!strcmp(argv[i],"--help")) {
-			printf("call: exif2filename [OPTION]... prefix\n");
-			printf("Converting all .jpg files in the current directory to prefixyyyymmddhhmm. The timestamp is taken from the exif informations of the files\n");
-			return true;
+		if(!strcmp(argv[i], "--help")) {
+			options.help = true;
+			break;
 		}
+		if(!strcmp(argv[i], "-b")) {
+			options.backup = true;
+			break;
+		}
+		if(strstr(argv[i], "-") != NULL)
+			options.error = true;
+
 	}
-	return false;
+	return options;
 }
