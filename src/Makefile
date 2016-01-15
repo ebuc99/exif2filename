@@ -99,7 +99,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_exif2filename_OBJECTS = main.$(OBJEXT) file_handling.$(OBJEXT)
+am_exif2filename_OBJECTS = main.$(OBJEXT) file_handling.$(OBJEXT) \
+	options_handling.$(OBJEXT)
 exif2filename_OBJECTS = $(am_exif2filename_OBJECTS)
 exif2filename_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
@@ -194,15 +195,15 @@ OBJEXT = o
 PACKAGE = exif2filename
 PACKAGE_BUGREPORT = ebuc99@googlemail.com
 PACKAGE_NAME = exif2filename
-PACKAGE_STRING = exif2filename 0.1
+PACKAGE_STRING = exif2filename 0.2
 PACKAGE_TARNAME = exif2filename
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.1
+PACKAGE_VERSION = 0.2
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
-VERSION = 0.1
+VERSION = 0.2
 abs_builddir = /home/daniel/Programmierung/c/exif2filename/src
 abs_srcdir = /home/daniel/Programmierung/c/exif2filename/src
 abs_top_builddir = /home/daniel/Programmierung/c/exif2filename
@@ -246,7 +247,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CFLAGS = -g -Wall -lexif
-exif2filename_SOURCES = main.c file_handling.c
+exif2filename_SOURCES = main.c file_handling.c options_handling.c
 all: all-am
 
 .SUFFIXES:
@@ -335,6 +336,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/file_handling.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/options_handling.Po
 
 .c.o:
 	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

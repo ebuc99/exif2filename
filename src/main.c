@@ -1,29 +1,39 @@
-#include <file_handling.h>
+#include "file_handling.h"
 #include <stdbool.h>
+#include "options_handling.h"
+#include "config.h"
 #define MAXCHAR 20
-
-struct options {
-	bool help;
-	bool backup;
-	bool error;
-};
+#define NUMBER_OPTIONS 3
+#define OPTION_HELP "--help"
+#define OPTION_VERSION "--version"
+#define OPTION_BACKUP "--backup"
 
 void date2filename(const char str_prefix[], char str_in[], char str_out[]);
 
 char* getFilePrefix(int argc, char *argv[]);
 
-struct options getOptions(int argc, char *argv[]);
-
 int main(int argc, char *argv[]) {
-	struct options options = getOptions(argc, argv);
-	if(options.help) {
+	oh_option *options;
+	options = oh_init(argc, argv);
+	char *valid_options[NUMBER_OPTIONS];
+	valid_options[0] = OPTION_HELP;
+	valid_options[1] = OPTION_VERSION;
+	valid_options[2] = OPTION_BACKUP;
+	if(!oh_validate(options, valid_options, NUMBER_OPTIONS))
+		return EXIT_FAILURE;
+
+	if(oh_exists(options, OPTION_HELP)) {
 			printf("call: exif2filename [OPTION]... prefix\n");
 			printf("Converting all .jpg files in the current directory to prefixyyyymmddhhmm. The timestamp is taken from the exif informations of the files\n");
+			printf("Options:\n");
+			printf("%s\t\t\tprint this help\n", OPTION_HELP);
+			printf("%s\t\tshow version\n", OPTION_VERSION);
+			printf("%s=filename\tcreate backup script with given filename\n", OPTION_BACKUP);
 		return EXIT_SUCCESS;
 	}
-	if(options.error) {
-		printf("unknown options, see help\n");
-		return EXIT_FAILURE;
+	if(oh_exists(options, OPTION_VERSION)) {
+		printf("Version %s\n", VERSION);
+		return EXIT_SUCCESS;
 	}
 	char* file_prefix = getFilePrefix(argc, argv);
 	if(!file_prefix)
@@ -51,6 +61,8 @@ int main(int argc, char *argv[]) {
 	}
 	write_backup_file(file_prefix, frename, cnt_files);
 	rename_files(frename, cnt_files);
+	if(options)
+		free(options);
 	return EXIT_SUCCESS;
 }
 
@@ -77,23 +89,4 @@ char* getFilePrefix(int argc, char *argv[]) {
 		return NULL;
 	}
 	return argv[1];
-}
-
-struct options getOptions(int argc, char *argv[]) {
-	struct options options = {false, false, false};
-	int i;
-	for(i=1;i<argc;++i){
-		if(!strcmp(argv[i], "--help")) {
-			options.help = true;
-			break;
-		}
-		if(!strcmp(argv[i], "-b")) {
-			options.backup = true;
-			break;
-		}
-		if(strstr(argv[i], "-") != NULL)
-			options.error = true;
-
-	}
-	return options;
 }

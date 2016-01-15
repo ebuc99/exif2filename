@@ -99,7 +99,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_exif2filename_OBJECTS = main.$(OBJEXT) file_handling.$(OBJEXT)
+am_exif2filename_OBJECTS = main.$(OBJEXT) file_handling.$(OBJEXT) \
+	options_handling.$(OBJEXT)
 exif2filename_OBJECTS = $(am_exif2filename_OBJECTS)
 exif2filename_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -246,7 +247,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -g -Wall -lexif
-exif2filename_SOURCES = main.c file_handling.c
+exif2filename_SOURCES = main.c file_handling.c options_handling.c
 all: all-am
 
 .SUFFIXES:
@@ -335,6 +336,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file_handling.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/options_handling.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
